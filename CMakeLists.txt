@@ -7,6 +7,8 @@ include_directories(lib)
 include_directories(include)
 
 #Subdirectories
+add_subdirectory(lib/SDL)
+include_directories(lib/SDL/include)
 
 #Subdirectories Plattformabhängig
 if(WIN32)
@@ -23,6 +25,7 @@ endif()
 #Unterlibraries
 
 list(APPEND libs
+    SDL2-static
 )
 
 #Externe Libraries
@@ -45,3 +48,7 @@ if (WIN32)
 else()
     target_link_libraries(Program PRIVATE "${libs}")
 endif()
+
+#Tests
+add_executable(SineTest src/Test/SineTest.cpp)
+target_link_libraries(SineTest SDL2-static)
