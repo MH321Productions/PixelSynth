@@ -50,5 +50,7 @@ else()
 endif()
 
 #Tests
+enable_testing()
 add_executable(SineTest src/Test/SineTest.cpp)
 target_link_libraries(SineTest SDL2-static)
+add_test(NAME SineTest COMMAND SineTest)
