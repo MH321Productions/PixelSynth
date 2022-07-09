@@ -18,51 +18,37 @@ int main() {
 
     cout << "SDL initialized" << endl;
 
-    /*cout << "Available drivers: " << endl;
-    for (int i = 0; i < SDL_GetNumAudioDrivers(); i++) {
-        cout << i << ": " << SDL_GetAudioDriver(i) << endl;
-    }*/
-
     cout << "Using audio driver: " << SDL_GetCurrentAudioDriver() << endl;
 
     cout << "Available audio devices:" << endl;
     for (int i = 0; i < SDL_GetNumAudioDevices(0); i++) {
-        cout << i << ": " << SDL_GetAudioDeviceName(i, 0) << endl;
+        cout << "Testing device " << i << ": " << SDL_GetAudioDeviceName(i, 0) << flush;
+    
+
+        SDL_AudioSpec spec, real;
+        SDL_AudioDeviceID dev;
+
+        if (SDL_GetAudioDeviceSpec(i, 0, &spec) != 0) {
+            cerr << "Couldn't get device specs: " << SDL_GetError() << endl;
+            return 1;
+        }
+
+        spec.freq = 48000;
+        spec.format = AUDIO_S16SYS;
+        spec.samples = 4096;
+        spec.callback = fillBuffer;
+
+        dev = SDL_OpenAudioDevice(SDL_GetAudioDeviceName(0, 0), 0, &spec, NULL, 0);
+        if (dev == 0) {
+            cerr << "Couldn't open the device: " << SDL_GetError() << endl;
+            return 1;
+        }
+
+        SDL_PauseAudioDevice(dev, 0);
+        SDL_Delay(2000);
+        cout << " -- finished" << endl;
+        SDL_CloseAudioDevice(dev);
     }
-
-    /*cout << "Choose a device: ";
-    int index;
-    cin >> index;
-
-    if (index < 0 || index >= SDL_GetNumAudioDevices(0)) {
-        cerr << "Invalid index" << endl;
-        return 1;
-    }*/
-
-    SDL_AudioSpec spec;
-    SDL_AudioDeviceID dev;
-
-    if (SDL_GetAudioDeviceSpec(0, 0, &spec) != 0) {
-        cerr << "Couldn't get device specs: " << SDL_GetError() << endl;
-        return 1;
-    }
-
-    spec.freq = 48000;
-    spec.format = AUDIO_S16SYS;
-    spec.samples = 4096;
-    spec.callback = fillBuffer;
-
-    dev = SDL_OpenAudioDevice(SDL_GetAudioDeviceName(0, 0), 0, &spec, NULL, 0);
-    if (dev == 0) {
-        cerr << "Couldn't open the device: " << SDL_GetError() << endl;
-        return 1;
-    }
-
-    cout << "Start playing" << endl;
-    SDL_PauseAudioDevice(dev, 0);
-    SDL_Delay(2000);
-    cout << "Stop playing" << endl;
-    SDL_CloseAudioDevice(dev);
 
     SDL_Quit();
 
