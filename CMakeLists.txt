@@ -22,10 +22,14 @@ set(CMAKE_CXX_COMPILER g++)
 if(CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
 endif()
 
-#Unterlibraries
+#libraries
+add_library(Hardware src/Hardware/Device.cpp src/Hardware/HardwareHandler.cpp)
+target_link_libraries(Hardware PRIVATE SDL2-static)
+add_library(Synth src/Synth/Synth.cpp)
+add_library(Mixer src/Mixer/Mixer.cpp src/Mixer/SimpleMixer.cpp)
 
 list(APPEND libs
-    SDL2-static
+    Hardware
 )
 
 #Externe Libraries
@@ -43,7 +47,7 @@ set_target_properties(Program PROPERTIES OUTPUT_NAME "Voller Programmname")
 if (WIN32)
     target_link_libraries(Program PRIVATE "${libs}")
 	
-	set_target_properties("${libs}" PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded")
+	set_target_properties("${libs}" SDL2-static PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded")
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS")
 else()
     target_link_libraries(Program PRIVATE "${libs}")
