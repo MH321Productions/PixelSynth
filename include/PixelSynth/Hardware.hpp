@@ -32,12 +32,6 @@ class Device {
         //Close the device
         void close();
 
-        //Pause the device
-        void pause();
-
-        //Play the device
-        void play();
-
     public:
         const std::string name;
         const int id;
@@ -45,6 +39,12 @@ class Device {
         bool isOpen, isRunning;
 
         bool operator == (const Device& other) const;
+
+        //Pause the device
+        void pause();
+
+        //Play the device
+        void play();
 };
 
 /**
