@@ -1,10 +1,13 @@
 #include <iostream>
+
+#define SDL_MAIN_HANDLED
 #include "SDL.h"
 #include "SDL_audio.h"
 
 using namespace std;
 
 static uint64_t totalSamples = 0;
+static int channel;
 
 void fillBuffer(void* userdata, Uint8* stream, int length);
 
@@ -17,6 +20,11 @@ int main() {
     }
 
     cout << "SDL initialized" << endl;
+
+    cout << "Available audio drivers:" << endl;
+    for (int i = 0; i < SDL_GetNumAudioDrivers(); i++) {
+        cout << i << ": " << SDL_GetAudioDriver(i) << endl;
+    }
 
     cout << "Using audio driver: " << SDL_GetCurrentAudioDriver() << endl;
 
@@ -38,11 +46,13 @@ int main() {
         spec.samples = 4096;
         spec.callback = fillBuffer;
 
-        dev = SDL_OpenAudioDevice(SDL_GetAudioDeviceName(0, 0), 0, &spec, NULL, 0);
+        dev = SDL_OpenAudioDevice(SDL_GetAudioDeviceName(i, 0), 0, &spec, NULL, 0);
         if (dev == 0) {
             cerr << "Couldn't open the device: " << SDL_GetError() << endl;
             return 1;
         }
+
+        channel = spec.channels;
 
         SDL_PauseAudioDevice(dev, 0);
         SDL_Delay(2000);
@@ -61,14 +71,13 @@ void fillBuffer(void* userdata, Uint8* stream, int length) {
 
     SDL_memset(stream, 0, length);
 
-    for (int i = 0; i < samples; i += 2) {
+    for (int i = 0; i < samples; i += channel) {
         float time = (float) totalSamples / 48000;
         int freq = 440; //Sample Frequency: a
         int amp = SDL_MAX_SINT16;
 
         Sint16 value = (Sint16)(SDL_sin(6.283185f * time * freq) * amp);
-        buffer[i] = value;
-        buffer[i + 1] = value;
+        for (int j = 0; j < channel; j++) buffer[i + j] = value;
         totalSamples++;
     }
 }
