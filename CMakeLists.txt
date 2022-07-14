@@ -5,17 +5,19 @@ project(project-name LANGUAGES CXX)
 include_directories(src)
 include_directories(lib)
 include_directories(include)
+include_directories(res)
 
 #Subdirectories
 add_subdirectory(lib/SDL)
 include_directories(lib/SDL/include)
+include_directories(lib/stb)
 
-#Subdirectories Plattformabhängig
 if(WIN32)
 else()
 set(HAVE_DLOPEN 1) #Enable dlopen for unix bc cmake check fails
 endif()
 
+set(wxBUILD_SHARED OFF)
 add_subdirectory(lib/wxWidgets)
 include_directories(lib/wxWidgets/include)
 
@@ -31,6 +33,7 @@ add_library(Hardware src/Hardware/Device.cpp src/Hardware/HardwareHandler.cpp)
 target_link_libraries(Hardware PRIVATE SDL2-static)
 add_library(Synth src/Synth/Synth.cpp)
 add_library(Mixer src/Mixer/Mixer.cpp src/Mixer/SimpleMixer.cpp)
+#add_library(UIutil src/UI/ImageHandler/ImageHandler.cpp)
 
 list(APPEND SynthLibs
     Hardware Synth Mixer
@@ -43,20 +46,22 @@ list(APPEND wxLibs
 #Externe Libraries
 if (WIN32)
     set(CMAKE_BUILD_TYPE Release)
-	set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded")
+	#set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded")
 else()
     set(CMAKE_CXX_FLAGS -no-pie)
 endif()
 
 #Hauptprogramm
-add_executable(SimpleSynth src/UI/SimpleSynth/SSynth.cpp src/UI/SimpleSynth/SSynthImpl.cpp)
+add_executable(SimpleSynth src/UI/SimpleSynth/SSynth.cpp src/UI/SimpleSynth/SSynthImpl.cpp src/UI/ImageHandler/ImageHandler.cpp)
 set_target_properties(SimpleSynth PROPERTIES OUTPUT_NAME "SimpleSynth")
 
 if (WIN32)
-    target_link_libraries(SimpleSynth PRIVATE "${SynthLibs}")
+    target_link_libraries(SimpleSynth PRIVATE "${SynthLibs}" "${wxLibs}" UIutil)
+    set_target_properties(SimpleSynth PROPERTIES WIN32_EXECUTABLE TRUE)
 	
-	set_target_properties("${libs}" SDL2-static PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded")
-	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS")
+	#set_target_properties(${SynthLibs} SDL2-static PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded")
+    #set_target_properties(${BUILDSYSTEM_TARGETS} PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded")
+    #set_target_properties(${wxLibs} PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded")
 else()
     target_link_libraries(SimpleSynth PRIVATE "${SynthLibs}" "${wxLibs}")
 endif()
