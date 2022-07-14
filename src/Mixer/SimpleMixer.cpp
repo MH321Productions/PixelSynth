@@ -5,11 +5,13 @@ void SimpleMixer::fillBuffer(short* buffer, const int& length, const int& sample
     //Send the same tone to each channel
     int channels = hardware->getActiveDevice().channels;
     for (int i = 0; i < samples; i += channels) {
+        calculateTimes();
         short value = (short) (getTone() * maxAmp);
 
         for (int j = 0; j < channels; j++) {
             buffer[i + j] = value;
         }
+        totalSamples++;
     }
 }
 
