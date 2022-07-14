@@ -16,6 +16,7 @@
 #include <wx/settings.h>
 #include <wx/string.h>
 #include <wx/stattext.h>
+#include <wx/choice.h>
 #include <wx/sizer.h>
 #include <wx/panel.h>
 #include <wx/bmpbuttn.h>
@@ -29,32 +30,41 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class ssynthFrame
+/// Class SSynthFrame
 ///////////////////////////////////////////////////////////////////////////////
-class ssynthFrame : public wxFrame
+class SSynthFrame : public wxFrame
 {
 	private:
 
 	protected:
 		wxPanel* panelFreq;
 		wxSlider* sliderFreq;
+		wxStaticText* lblFreqText;
 		wxStaticText* lblFreq;
+		wxStaticText* lblDevText;
+		wxChoice* cmbDevice;
 		wxPanel* panelSynth;
 		wxBitmapButton* btnSine;
 		wxBitmapButton* btnSquare;
-		wxBitmapButton* btnLinear;
+		wxBitmapButton* btnTriangle;
 		wxBitmapButton* btnSaw;
 		wxBitmapButton* btnNoise;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void onIdle( wxIdleEvent& event ) { event.Skip(); }
+		virtual void onFreq( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onSine( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onSquare( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onTriangle( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onSaw( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onNoise( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
 
-		ssynthFrame( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("PixelSynth - Simple Synth"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		SSynthFrame( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("PixelSynth - Simple Synth"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 620,300 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
-		~ssynthFrame();
+		~SSynthFrame();
 
 };
 
