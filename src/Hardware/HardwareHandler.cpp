@@ -81,5 +81,7 @@ bool HardwareHandler::setActiveDevice(const int& index) {
         return false;
     }
 
+    cout << "Active device: " << activeDevice->name << "\nChannels: " << activeDevice->channels << endl;
+
     return true;
 }
