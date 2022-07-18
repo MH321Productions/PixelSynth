@@ -18,8 +18,11 @@ float SineSynth::generate(const unsigned long& sample, const float& absTime, con
 //------------------------------------------------------------------------------------------------------------
 //SquareSynth
 float SquareSynth::generate(const unsigned long& sample, const float& absTime, const float& relTime, const unsigned int& freq) {
-    float s = sin(twoPi * absTime * freq);
-    return (s < 0) ? -1.0f : 1.0f; //Use sign of sine to create square
+    /*float s = sin(twoPi * absTime * freq);
+    return (s < 0) ? -1.0f : 1.0f; //Use sign of sine to create square*/
+    if (relTime == 0.0f || relTime == 0.5f || relTime == 1.0f) return 0.0f;
+    else if (relTime < 0.5f) return 1.0f;
+    else return -1.0f;
 }
 //------------------------------------------------------------------------------------------------------------
 
