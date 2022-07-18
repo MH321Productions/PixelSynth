@@ -7,3 +7,6 @@
 [submodule "lib/stb"]
 	path = lib/stb
 	url = https://github.com/nothings/stb.git
+[submodule "lib/libremidi"]
+	path = lib/libremidi
+	url = https://github.com/jcelerier/libremidi.git
