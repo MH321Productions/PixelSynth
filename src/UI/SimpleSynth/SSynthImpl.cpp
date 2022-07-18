@@ -117,6 +117,7 @@ void SSynthFrameImpl::onSaw(wxCommandEvent& event) {
 void SSynthFrameImpl::onNoise(wxCommandEvent& event) {
     unselectButtons();
     btnNoise->SetBitmap({imgNoiseSelected});
+    sliderFreq->Disable();
     updateMixer(SynthType::Noise);
 }
 
@@ -133,4 +134,5 @@ void SSynthFrameImpl::unselectButtons() {
     btnTriangle->SetBitmap({imgTriangle});
     btnSaw->SetBitmap({imgSaw});
     btnNoise->SetBitmap({imgNoise});
+    sliderFreq->Enable();
 }

@@ -20,7 +20,7 @@ SSynthFrame::SSynthFrame( wxWindow* parent, wxWindowID id, const wxString& title
 	wxBoxSizer* sizerFreq;
 	sizerFreq = new wxBoxSizer( wxVERTICAL );
 
-	sliderFreq = new wxSlider( panelFreq, wxID_ANY, 440, 1, 10000, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL );
+	sliderFreq = new wxSlider( panelFreq, wxID_ANY, 440, 1, 2000, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL );
 	sizerFreq->Add( sliderFreq, 0, wxALL|wxEXPAND, 5 );
 
 	wxFlexGridSizer* sizerFreqDevice;
