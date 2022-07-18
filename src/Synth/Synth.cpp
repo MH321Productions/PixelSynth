@@ -45,7 +45,6 @@ NoiseSynth::NoiseSynth() {
 }
 
 float NoiseSynth::generate(const unsigned long& sample, const float& absTime, const float& relTime, const unsigned int& freq) {
-    //return 0.0f; //TODO: Implement Noise generator
     return gen() / (float) INT32_MAX; //Random values between -1 and 1
 }
 //------------------------------------------------------------------------------------------------------------
