@@ -2,6 +2,7 @@
 #include <cmath>
 #include <chrono>
 #include "PixelSynth/Synth.hpp"
+#include "PixelSynth/Hardware.hpp"
 
 using namespace std;
 using namespace chrono;
@@ -18,40 +19,22 @@ float SineSynth::generate(const unsigned long& sample, const float& absTime, con
 //------------------------------------------------------------------------------------------------------------
 //SquareSynth
 float SquareSynth::generate(const unsigned long& sample, const float& absTime, const float& relTime, const unsigned int& freq) {
-    /*float s = sin(twoPi * absTime * freq);
-    return (s < 0) ? -1.0f : 1.0f; //Use sign of sine to create square*/
-    if (relTime == 0.0f || relTime == 0.5f || relTime == 1.0f) return 0.0f;
-    else if (relTime < 0.5f) return 1.0f;
-    else return -1.0f;
+    float s = sin(twoPi * absTime * freq);
+    return (s < 0) ? -1.0f : (s == 0) ? 0.0f : 1.0f; //Use sign of sine to create square
 }
 //------------------------------------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------------------------------------
 //TriangleSynth
-const float TriangleSynth::quarter = 0.25f;
-const float TriangleSynth::threeQuarters = 0.75f;
-const float TriangleSynth::two = 2.0f;
-const float TriangleSynth::four = 4.0f;
-
 float TriangleSynth::generate(const unsigned long& sample, const float& absTime, const float& relTime, const unsigned int& freq) {
-    if (relTime > quarter && relTime <= threeQuarters) {
-        return two - (relTime * -four);
-    } else if (relTime > threeQuarters) {
-        return (relTime * four) - four;
-    } else {
-        return relTime * four;
-    }
+    return 2.0f * abs(2.0f * (absTime * freq - floor(absTime * freq + 0.5f))) - 1.0f;
 }
 //------------------------------------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------------------------------------
 //SawSynth
-const float SawSynth::two = 2.0f;
 float SawSynth::generate(const unsigned long& sample, const float& absTime, const float& relTime, const unsigned int& freq) {
-    float normal = relTime * 2.0f;
-    if (relTime > 0.5f) normal -= 2.0f;
-
-    return normal;
+    return 2.0f * (absTime * freq - floor(absTime * freq + 0.5f));
 }
 //------------------------------------------------------------------------------------------------------------
 
@@ -62,6 +45,7 @@ NoiseSynth::NoiseSynth() {
 }
 
 float NoiseSynth::generate(const unsigned long& sample, const float& absTime, const float& relTime, const unsigned int& freq) {
-    return 0.0f; //TODO: Implement Noise generator
+    //return 0.0f; //TODO: Implement Noise generator
+    return gen() / (float) INT32_MAX; //Random values between -1 and 1
 }
 //------------------------------------------------------------------------------------------------------------

@@ -52,8 +52,6 @@ class SquareSynth: public virtual Synth {
  * 
  */ 
 class TriangleSynth: public virtual Synth {
-    private:
-        static const float quarter, two, threeQuarters, four;
     public:
         virtual float generate(const unsigned long& sample, const float& absTime, const float& relTime, const unsigned int& freq);
 };
@@ -66,9 +64,6 @@ class TriangleSynth: public virtual Synth {
  * 
  */ 
 class SawSynth: public virtual Synth {
-    private:
-        static const float two;
-        
     public:
         virtual float generate(const unsigned long& sample, const float& absTime, const float& relTime, const unsigned int& freq);
 };
@@ -78,7 +73,7 @@ class SawSynth: public virtual Synth {
  */ 
 class NoiseSynth: public virtual Synth {
     private:
-        std::mt19937_64 gen;
+        std::mt19937 gen;
 
     public:
         NoiseSynth();
