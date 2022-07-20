@@ -11,6 +11,8 @@ include_directories(res)
 add_subdirectory(lib/SDL)
 include_directories(lib/SDL/include)
 include_directories(lib/stb)
+add_subdirectory(lib/libremidi)
+include_directories(lib/libremidi/include)
 
 if(WIN32)
 else()
@@ -48,7 +50,7 @@ if (WIN32)
     set(CMAKE_BUILD_TYPE Release)
 	#set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded")
 else()
-    set(CMAKE_CXX_FLAGS -no-pie)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -no-pie")
 endif()
 
 #Hauptprogramm
