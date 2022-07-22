@@ -55,11 +55,11 @@ endif()
 
 #Hauptprogramm
 add_executable(SimpleSynth src/UI/SimpleSynth/SSynth.cpp src/UI/SimpleSynth/SSynthImpl.cpp src/UI/ImageHandler/ImageHandler.cpp)
-set_target_properties(SimpleSynth PROPERTIES OUTPUT_NAME "SimpleSynth")
+set_target_properties(SimpleSynth PROPERTIES OUTPUT_NAME "SimpleSynth" WIN32_EXECUTABLE TRUE)
+target_compile_definitions(SimpleSynth PRIVATE IH_USE_WX)
 
 if (WIN32)
-    target_link_libraries(SimpleSynth PRIVATE "${SynthLibs}" "${wxLibs}" UIutil)
-    set_target_properties(SimpleSynth PROPERTIES WIN32_EXECUTABLE TRUE)
+    target_link_libraries(SimpleSynth PRIVATE "${SynthLibs}" "${wxLibs}")
 	
 	#set_target_properties(${SynthLibs} SDL2-static PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded")
     #set_target_properties(${BUILDSYSTEM_TARGETS} PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded")
@@ -70,6 +70,13 @@ endif()
 
 #Tests
 enable_testing()
+
 add_executable(SineTest src/Test/SineTest.cpp)
 target_link_libraries(SineTest SDL2-static)
 add_test(NAME SineTest COMMAND SineTest)
+
+add_executable(SurroundTest src/Test/SurroundTest.cpp src/UI/ImageHandler/ImageHandler.cpp)
+set_target_properties(SurroundTest PROPERTIES WIN32_EXECUTABLE TRUE)
+target_link_libraries(SurroundTest SDL2-static SDL2main)
+target_compile_definitions(SurroundTest PRIVATE IH_USE_SDL)
+add_test(NAME SurroundTest COMMAND SurroundTest)
