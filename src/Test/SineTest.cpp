@@ -6,7 +6,7 @@
 
 using namespace std;
 
-static uint64_t totalSamples = 0;
+static Uint64 totalSamples = 0;
 static int channel;
 
 void fillBuffer(void* userdata, Uint8* stream, int length);
@@ -15,7 +15,7 @@ int main() {
     cout << "Starting sinewave test" << endl;
 
     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
-        cerr << "Couldn't start SDL Audio: " << SDL_GetError() << endl;
+        cerr << "Couldn't init SDL Audio: " << SDL_GetError() << endl;
         return 1;
     }
 
